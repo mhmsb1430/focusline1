@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مَسَاري | دليلك السياحي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sand:#F5EFE0;--sand-deep:#E8DCC8;--bark:#2C1F0E;--bark-mid:#4A3520;
+            --moss:#3D5A3E;--moss-light:#5A7F5B;--ember:#C0522A;--ember-glow:#E07045;
+            --cream:#FDFAF4;--text-dark:#1A1208;--text-mid:#6B5540;--text-light:#9C8470;
+            --purple:#7C3AED;--purple-light:#8B5CF6;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Tajawal',sans-serif;background:var(--cream);color:var(--text-dark);min-height:100vh;overflow-x:hidden;}
+        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.5;}
+
+        /* HEADER */
+        header{position:sticky;top:0;z-index:100;background:var(--bark);border-bottom:2px solid var(--bark-mid);}
+        .header-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+        .logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;}
+        .logo-icon{width:38px;height:38px;background:var(--ember);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;flex-shrink:0;}
+        .logo-text .main{font-size:18px;font-weight:900;color:var(--sand);letter-spacing:-0.5px;}
+        .logo-text .sub{font-size:10px;color:var(--text-light);margin-top:2px;font-weight:400;}
+        .header-actions{display:flex;align-items:center;gap:10px;}
+        .type-switcher{display:flex;background:var(--bark-mid);border-radius:12px;padding:4px;gap:2px;}
+        .type-btn{padding:7px 18px;border-radius:9px;border:none;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--text-light);background:transparent;transition:all 0.25s ease;white-space:nowrap;}
+        .type-btn.active{background:var(--ember);color:white;box-shadow:0 2px 8px rgba(192,82,42,0.4);}
+        .dash-toggle-btn{background:var(--bark-mid);border:1px solid rgba(255,255,255,0.1);color:var(--sand-deep);padding:8px 14px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+        .dash-toggle-btn:hover,.dash-toggle-btn.active{background:var(--moss);border-color:var(--moss);color:white;}
+
+        /* HERO */
+        .hero-strip{background:linear-gradient(135deg,var(--bark) 0%,var(--bark-mid) 100%);padding:40px 24px 48px;position:relative;overflow:hidden;}
+        .hero-strip::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:32px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%);}
+        .hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+        .hero-label{font-size:11px;font-weight:700;color:var(--ember-glow);letter-spacing:2px;margin-bottom:8px;}
+        .hero-title{font-size:clamp(22px,4vw,34px);font-weight:900;color:var(--sand);line-height:1.2;margin-bottom:24px;}
+        .hero-title span{color:var(--ember-glow);}
+        .city-grid{display:flex;gap:10px;flex-wrap:wrap;}
+        .city-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:50px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:var(--sand-deep);font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.25s ease;}
+        .city-btn:hover{border-color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);}
+        .city-btn.active{background:var(--ember);border-color:var(--ember);color:white;box-shadow:0 4px 20px rgba(192,82,42,0.45);}
+        .city-btn .city-icon{width:22px;height:22px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;}
+
+        /* MAIN */
+        .main-layout{max-width:1100px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;}
+        @media(max-width:900px){.main-layout{grid-template-columns:1fr;}}
+        .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+        .section-title{font-size:15px;font-weight:800;color:var(--text-dark);}
+        .section-title span.city{color:var(--ember);}
+        .section-title span.type{color:var(--moss);}
+        .count-badge{background:var(--sand-deep);color:var(--text-mid);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;}
+
+        /* PLACE CARDS */
+        .cards-list{display:flex;flex-direction:column;gap:14px;}
+        .place-card{background:white;border-radius:18px;border:1px solid #EDE5D8;overflow:hidden;cursor:pointer;transition:all 0.25s ease;display:flex;box-shadow:0 2px 8px rgba(44,31,14,0.05);animation:slideUp 0.35s ease both;}
+        .place-card:hover{box-shadow:0 8px 28px rgba(44,31,14,0.12);transform:translateY(-2px);border-color:#D4C4AC;}
+        @keyframes slideUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+        .card-img-wrap{width:130px;min-height:130px;flex-shrink:0;position:relative;overflow:hidden;}
+        .card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease;}
+        .place-card:hover .card-img{transform:scale(1.06);}
+        .card-img-placeholder{width:130px;min-height:130px;background:linear-gradient(135deg,var(--sand-deep),var(--sand));display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:28px;color:var(--text-light);}
+        .card-body{padding:14px 16px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;}
+        .card-cat{display:inline-block;font-size:10px;font-weight:800;color:var(--ember);background:#FDF0EA;padding:3px 9px;border-radius:6px;margin-bottom:5px;border:1px solid #F0D8CC;}
+        .card-name{font-size:14px;font-weight:800;color:var(--text-dark);line-height:1.3;margin-bottom:3px;}
+        .card-desc{font-size:11px;color:var(--text-mid);line-height:1.6;}
+        /* FACILITIES PILLS */
+        .card-facilities{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+        .facility-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:4px 9px;border-radius:20px;border:1px solid;cursor:pointer;transition:all 0.18s ease;}
+        .facility-pill.type-basic{color:#0369A1;background:#F0F9FF;border-color:#BAE6FD;}
+        .facility-pill.type-food{color:#065F46;background:#F0FDF4;border-color:#BBF7D0;}
+        .facility-pill.type-prayer{color:#7C3AED;background:#F5F3FF;border-color:#DDD6FE;}
+        .facility-pill.type-parking{color:#92400E;background:#FFFBEB;border-color:#FDE68A;}
+        .facility-pill.type-fire{color:#DC2626;background:#FFF1F2;border-color:#FECDD3;}
+        .facility-pill.type-wifi{color:#0E7490;background:#ECFEFF;border-color:#A5F3FC;}
+        .facility-pill.type-kids{color:#4F46E5;background:#EEF2FF;border-color:#C7D2FE;}
+        .facility-pill.type-view{color:#065F46;background:#F0FDF4;border-color:#BBF7D0;}
+        .facility-pill:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+        .card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;}
+        .card-cta{flex-shrink:0;background:var(--bark);color:var(--sand);border:none;padding:8px 16px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:background 0.2s;white-space:nowrap;}
+        .card-cta:hover{background:var(--ember);}
+        .card-delete-btn{flex-shrink:0;background:#FEF2F2;color:#EF4444;border:1px solid #FEE2E2;padding:8px 10px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:11px;cursor:pointer;transition:all 0.2s;display:none;align-items:center;gap:4px;}
+        .card-delete-btn:hover{background:#EF4444;color:white;}
+        .dashboard-mode .card-delete-btn{display:flex;}
+        .dashboard-mode .card-cta{display:none;}
+
+        /* AI PANEL */
+        .ai-panel{background:white;border-radius:20px;border:1px solid #EDE5D8;overflow:hidden;box-shadow:0 4px 20px rgba(44,31,14,0.07);display:flex;flex-direction:column;height:560px;position:sticky;top:80px;}
+        .ai-header{background:var(--bark);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+        .ai-avatar{width:34px;height:34px;background:var(--ember);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;flex-shrink:0;}
+        .ai-header-text .title{font-size:12px;font-weight:800;color:var(--sand);}
+        .ai-header-text .sub{font-size:10px;color:var(--text-light);margin-top:1px;}
+        .ai-context-badge{margin-right:auto;background:rgba(255,255,255,0.12);color:var(--sand-deep);font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:rtl;}
+        .ai-status{width:8px;height:8px;background:#4CAF50;border-radius:50%;box-shadow:0 0 0 3px rgba(76,175,80,0.2);animation:pulse 2s infinite;flex-shrink:0;}
+        @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(76,175,80,0.2);}50%{box-shadow:0 0 0 6px rgba(76,175,80,0.1);}}
+        /* Context strip shown when a place is selected */
+        .ai-context-strip{background:#FDF0EA;border-bottom:1px solid #F0D8CC;padding:8px 14px;display:none;align-items:center;gap:8px;flex-shrink:0;}
+        .ai-context-strip.visible{display:flex;}
+        .ai-context-strip-img{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid #F0D8CC;}
+        .ai-context-strip-name{font-size:11px;font-weight:800;color:var(--ember);flex:1;}
+        .ai-context-strip-clear{background:none;border:none;color:var(--text-light);cursor:pointer;font-size:13px;padding:2px;}
+        .ai-context-strip-clear:hover{color:var(--ember);}
+        .ai-messages{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#FDFAF5;}
+        .ai-messages::-webkit-scrollbar{width:4px;} .ai-messages::-webkit-scrollbar-thumb{background:var(--sand-deep);border-radius:4px;}
+        .msg-ai,.msg-user{max-width:90%;animation:msgIn 0.3s ease both;}
+        @keyframes msgIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+        .msg-ai{align-self:flex-start;} .msg-user{align-self:flex-end;}
+        .msg-bubble-ai{background:white;border:1px solid #EDE5D8;border-radius:4px 14px 14px 14px;padding:9px 12px;font-size:12px;line-height:1.7;color:var(--text-dark);box-shadow:0 1px 4px rgba(44,31,14,0.06);}
+        .msg-bubble-user{background:var(--bark);color:var(--sand);border-radius:14px 4px 14px 14px;padding:9px 12px;font-size:12px;line-height:1.7;}
+        .msg-sender{font-size:10px;font-weight:700;color:var(--text-light);margin-bottom:3px;}
+        .typing-dots{display:flex;gap:4px;padding:4px 0;}
+        .typing-dots span{width:6px;height:6px;background:var(--text-light);border-radius:50%;animation:dotBounce 1.2s infinite;}
+        .typing-dots span:nth-child(2){animation-delay:0.2s;} .typing-dots span:nth-child(3){animation-delay:0.4s;}
+        @keyframes dotBounce{0%,80%,100%{transform:translateY(0);opacity:0.4;}40%{transform:translateY(-6px);opacity:1;}}
+        .ai-input-area{padding:10px;background:white;border-top:1px solid #EDE5D8;display:flex;gap:7px;flex-shrink:0;}
+        .ai-input{flex:1;background:#FDFAF5;border:1.5px solid #EDE5D8;border-radius:12px;padding:9px 13px;font-family:'Tajawal',sans-serif;font-size:12px;color:var(--text-dark);outline:none;transition:border-color 0.2s;}
+        .ai-input:focus{border-color:var(--ember);}
+        .ai-input::placeholder{color:var(--text-light);}
+        .ai-send{width:38px;height:38px;background:var(--ember);border:none;border-radius:11px;color:white;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+        .ai-send:hover{background:#A8421E;} .ai-send:active{transform:scale(0.92);}
+        @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+        /* FACILITY QUICK SUGGESTIONS */
+        .quick-suggestions{padding:8px 10px 0;display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;}
+        .quick-chip{font-size:10px;font-weight:700;padding:5px 10px;border-radius:20px;border:1px solid #EDE5D8;background:white;color:var(--text-mid);cursor:pointer;transition:all 0.18s;white-space:nowrap;}
+        .quick-chip:hover{background:var(--ember);color:white;border-color:var(--ember);}
+
+        /* DETAIL MODAL */
+        .modal-overlay{position:fixed;inset:0;background:rgba(26,18,8,0.75);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+        .modal-overlay.open{opacity:1;pointer-events:all;}
+        .modal-box{background:white;border-radius:24px;width:100%;max-width:500px;overflow:hidden;box-shadow:0 40px 100px rgba(26,18,8,0.35);transform:scale(0.92) translateY(16px);transition:transform 0.38s cubic-bezier(0.34,1.56,0.64,1);max-height:90vh;display:flex;flex-direction:column;}
+        .modal-overlay.open .modal-box{transform:scale(1) translateY(0);}
+        /* Photo gallery strip */
+        .modal-gallery{height:220px;position:relative;overflow:hidden;flex-shrink:0;}
+        .gallery-slides{display:flex;height:100%;transition:transform 0.4s ease;}
+        .gallery-slide{min-width:100%;height:100%;object-fit:cover;display:block;}
+        .gallery-slide-placeholder{min-width:100%;height:100%;background:linear-gradient(135deg,var(--sand-deep),var(--bark-mid));display:flex;align-items:center;justify-content:center;font-size:48px;color:rgba(255,255,255,0.3);}
+        .gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,18,8,0.7) 0%,rgba(26,18,8,0.1) 50%,transparent 100%);}
+        .gallery-nav{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:6px;}
+        .gallery-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4);border:none;cursor:pointer;transition:all 0.2s;}
+        .gallery-dot.active{background:white;width:20px;border-radius:4px;}
+        .gallery-prev,.gallery-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.85);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--text-dark);}
+        .gallery-prev{right:10px;} .gallery-next{left:10px;}
+        .gallery-prev:hover,.gallery-next:hover{background:white;transform:translateY(-50%) scale(1.05);}
+        .gallery-source-badge{position:absolute;bottom:36px;left:10px;background:rgba(0,0,0,0.5);color:white;font-size:9px;padding:2px 7px;border-radius:6px;backdrop-filter:blur(4px);}
+        .modal-close{position:absolute;top:10px;left:10px;width:30px;height:30px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.2s;color:var(--text-dark);z-index:2;}
+        .modal-close:hover{background:white;}
+        .modal-title-area{position:absolute;bottom:14px;right:14px;left:50px;z-index:2;}
+        .modal-name{color:white;font-size:17px;font-weight:900;line-height:1.2;}
+        .modal-cat-badge{display:inline-block;background:var(--ember);color:white;font-size:9px;font-weight:800;padding:2px 8px;border-radius:6px;margin-bottom:5px;}
+        /* Modal body */
+        .modal-body{padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;}
+        .modal-desc{font-size:13px;color:var(--text-mid);line-height:1.7;}
+        /* Full facility grid */
+        .modal-facilities-title{font-size:11px;font-weight:800;color:var(--text-mid);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+        .modal-facilities-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+        .modal-fac-item{display:flex;flex-direction:column;align-items:center;gap:4px;background:#F9F5EE;border-radius:12px;padding:10px 6px;border:1px solid #EDE5D8;cursor:pointer;transition:all 0.2s;}
+        .modal-fac-item:hover{background:var(--ember);border-color:var(--ember);transform:scale(1.03);}
+        .modal-fac-item:hover .fac-icon,.modal-fac-item:hover .fac-label{color:white;}
+        .fac-icon{font-size:18px;color:var(--ember);}
+        .fac-label{font-size:10px;font-weight:700;color:var(--text-dark);text-align:center;line-height:1.2;}
+        /* Chat with place btn */
+        .modal-chat-btn{background:var(--bark);color:var(--sand);border:none;padding:13px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;box-shadow:0 4px 14px rgba(44,31,14,0.2);}
+        .modal-chat-btn:hover{background:var(--ember);box-shadow:0 6px 20px rgba(192,82,42,0.35);}
+        .modal-map-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--moss);color:white;padding:12px;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:800;text-decoration:none;transition:background 0.2s;box-shadow:0 4px 14px rgba(61,90,62,0.3);}
+        .modal-map-btn:hover{background:var(--moss-light);}
+        .modal-btns-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+        /* DASHBOARD */
+        .dashboard-panel{max-width:1100px;margin:0 auto;padding:0 24px 40px;display:none;}
+        .dashboard-panel.open{display:block;}
+        .dash-box{background:white;border-radius:20px;border:1px solid #EDE5D8;box-shadow:0 4px 20px rgba(44,31,14,0.07);overflow:hidden;}
+        .dash-header{background:var(--bark);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+        .dash-header-title{display:flex;align-items:center;gap:10px;}
+        .dash-header-title h2{font-size:15px;font-weight:800;color:var(--sand);}
+        .dash-header-title .badge{background:var(--ember);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;}
+        .dash-tabs{display:flex;background:var(--bark-mid);border-radius:10px;padding:3px;gap:2px;}
+        .dash-tab{padding:6px 14px;border-radius:8px;border:none;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;cursor:pointer;color:var(--text-light);background:transparent;transition:all 0.2s;}
+        .dash-tab.active{background:var(--ember);color:white;}
+        .dash-body{padding:24px;}
+        .dash-section{display:none;} .dash-section.active{display:block;}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+        @media(max-width:640px){.form-grid{grid-template-columns:1fr;}}
+        .form-group{display:flex;flex-direction:column;gap:6px;}
+        .form-group.full{grid-column:1/-1;}
+        .form-label{font-size:11px;font-weight:700;color:var(--text-mid);}
+        .form-input,.form-select,.form-textarea{width:100%;background:#FDFAF5;border:1.5px solid #EDE5D8;border-radius:10px;padding:10px 14px;font-family:'Tajawal',sans-serif;font-size:13px;color:var(--text-dark);outline:none;transition:border-color 0.2s;resize:none;}
+        .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--ember);}
+        .form-hint{font-size:10px;color:var(--text-light);}
+        .form-submit-btn{background:var(--ember);color:white;border:none;padding:12px 28px;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(192,82,42,0.3);display:flex;align-items:center;gap:8px;}
+        .form-submit-btn:hover{background:#A8421E;transform:translateY(-1px);}
+        .form-footer{margin-top:20px;display:flex;align-items:center;gap:12px;}
+        /* facilities checkboxes */
+        .fac-check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+        .fac-check-item{display:flex;align-items:center;gap:6px;background:#FDFAF5;border:1.5px solid #EDE5D8;border-radius:9px;padding:7px 10px;cursor:pointer;transition:all 0.18s;}
+        .fac-check-item:hover{border-color:var(--ember);}
+        .fac-check-item.checked{background:#FDF0EA;border-color:var(--ember);}
+        .fac-check-item input{display:none;}
+        .fac-check-icon{font-size:14px;}
+        .fac-check-label{font-size:11px;font-weight:600;color:var(--text-dark);}
+        /* table */
+        .places-table-wrap{overflow-x:auto;}
+        table{width:100%;border-collapse:collapse;font-size:12px;}
+        th{background:#F9F5EE;color:var(--text-mid);font-weight:800;padding:10px 12px;text-align:right;border-bottom:2px solid #EDE5D8;font-size:11px;}
+        td{padding:10px 12px;border-bottom:1px solid #F0EAE0;color:var(--text-dark);vertical-align:middle;}
+        tr:hover td{background:#FDFAF5;}
+        .tbl-thumb{width:40px;height:32px;border-radius:6px;object-fit:cover;border:1px solid #EDE5D8;}
+        .tbl-delete{background:#FEF2F2;color:#EF4444;border:1px solid #FEE2E2;padding:5px 10px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+        .tbl-delete:hover{background:#EF4444;color:white;}
+        .tbl-badge{background:#FDF0EA;color:var(--ember);font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid #F0D8CC;}
+        .tbl-type-youth{background:#EFF6FF;color:#3B82F6;border:1px solid #DBEAFE;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;}
+        .tbl-type-fam{background:#F0FDF4;color:#16A34A;border:1px solid #DCFCE7;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;}
+        .empty-table{text-align:center;padding:40px;color:var(--text-light);font-size:13px;}
+        .empty-state{text-align:center;padding:48px 24px;color:var(--text-light);}
+        .empty-state i{font-size:36px;margin-bottom:12px;opacity:0.4;display:block;}
+        /* TOAST */
+        .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bark);color:var(--sand);padding:12px 24px;border-radius:14px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:all 0.4s;box-shadow:0 8px 30px rgba(26,18,8,0.3);pointer-events:none;border-right:4px solid var(--ember);}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+        .toast.success{border-right-color:#4CAF50;}
+        .toast.error{border-right-color:#EF4444;}
+        footer{background:var(--bark);color:var(--text-light);text-align:center;padding:18px;font-size:11px;}
+        footer span{color:var(--ember-glow);}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a class="logo" onclick="resetApp()">
+            <div class="logo-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="logo-text">
+                <div class="main">مَسَاري</div>
+                <div class="sub">دليلك السياحي في السراة</div>
+            </div>
+        </a>
+        <div class="header-actions">
+            <div class="type-switcher">
+                <button class="type-btn active" id="type-شباب" onclick="switchType('شباب')"><i class="fa-solid fa-user-group" style="margin-left:6px"></i>الشباب</button>
+                <button class="type-btn" id="type-عوائل" onclick="switchType('عوائل')"><i class="fa-solid fa-children" style="margin-left:6px"></i>العوائل</button>
+            </div>
+            <button class="dash-toggle-btn" id="dashToggleBtn" onclick="toggleDashboard()">
+                <i class="fa-solid fa-sliders"></i> <span>لوحة التحكم</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="hero-strip">
+    <div class="hero-inner">
+        <div class="hero-label">● اكتشف وجهتك القادمة</div>
+        <h1 class="hero-title">أفضل المواقع السياحية في<br><span id="heroCity">المندق</span> — مخصصة لـ <span id="heroType">الشباب</span></h1>
+        <div class="city-grid">
+            <button class="city-btn active" id="city-المندق" onclick="switchCity('المندق')"><span class="city-icon"><i class="fa-solid fa-cloud-sun"></i></span>المندق</button>
+            <button class="city-btn" id="city-الباحة" onclick="switchCity('الباحة')"><span class="city-icon"><i class="fa-solid fa-tree"></i></span>الباحة</button>
+            <button class="city-btn" id="city-الطائف" onclick="switchCity('الطائف')"><span class="city-icon"><i class="fa-solid fa-pepper-hot"></i></span>الطائف</button>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard-panel" id="dashboardPanel">
+    <div class="dash-box">
+        <div class="dash-header">
+            <div class="dash-header-title">
+                <i class="fa-solid fa-sliders" style="color:var(--ember)"></i>
+                <h2>لوحة تحكم المواقع</h2>
+                <span class="badge">ADMIN</span>
+            </div>
+            <div class="dash-tabs">
+                <button class="dash-tab active" onclick="switchDashTab('add')"><i class="fa-solid fa-plus" style="margin-left:5px"></i>إضافة</button>
+                <button class="dash-tab" onclick="switchDashTab('manage')"><i class="fa-solid fa-list" style="margin-left:5px"></i>الإدارة</button>
+            </div>
+        </div>
+        <div class="dash-body">
+            <div class="dash-section active" id="dash-add">
+                <div class="form-grid">
+                    <div class="form-group"><label class="form-label">اسم الموقع *</label><input class="form-input" id="f-name" type="text" placeholder="مثال: منتزه الخلب الكبير"></div>
+                    <div class="form-group"><label class="form-label">التصنيف *</label><input class="form-input" id="f-cat" type="text" placeholder="مثال: منتزهات ومغارات"></div>
+                    <div class="form-group"><label class="form-label">المدينة *</label><select class="form-select" id="f-city"><option value="المندق">المندق</option><option value="الباحة">الباحة</option><option value="الطائف">الطائف</option></select></div>
+                    <div class="form-group"><label class="form-label">مخصص لـ *</label><select class="form-select" id="f-type"><option value="شباب">الشباب</option><option value="عوائل">العوائل</option></select></div>
+                    <div class="form-group full"><label class="form-label">وصف الموقع *</label><textarea class="form-textarea" id="f-desc" rows="3" placeholder="اكتب وصفاً مفيداً وجذاباً..."></textarea></div>
+                    <div class="form-group full">
+                        <label class="form-label">المرافق المتوفرة</label>
+                        <div class="fac-check-grid" id="facCheckGrid">
+                            <!-- generated by JS -->
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">رابط خرائط قوقل</label><input class="form-input" id="f-map" type="text" placeholder="https://maps.google.com/..."></div>
+                    <div class="form-group"><label class="form-label">رابط صورة الموقع (اختياري)</label><input class="form-input" id="f-img" type="text" placeholder="اتركه فارغاً لصورة تلقائية من قوقل"></div>
+                </div>
+                <div class="form-footer"><button class="form-submit-btn" onclick="addPlace()"><i class="fa-solid fa-plus"></i>إضافة الموقع</button></div>
+            </div>
+            <div class="dash-section" id="dash-manage">
+                <div class="places-table-wrap">
+                    <table><thead><tr><th>الصورة</th><th>اسم الموقع</th><th>المدينة</th><th>الفئة</th><th>التصنيف</th><th>حذف</th></tr></thead>
+                    <tbody id="placesTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-layout" id="mainLayout">
+    <div>
+        <div class="section-header">
+            <h2 class="section-title">مواقع <span class="city" id="lblCity">المندق</span> — قسم <span class="type" id="lblType">الشباب</span></h2>
+            <span class="count-badge" id="itemsCount">0 مواقع</span>
+        </div>
+        <div class="cards-list" id="cardsContainer"></div>
+    </div>
+    <!-- AI PANEL -->
+    <div class="ai-panel">
+        <div class="ai-header">
+            <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+            <div class="ai-header-text">
+                <div class="title">مساعد مَسَاري الذكي</div>
+                <div class="sub">مدعوم بـ Claude AI</div>
+            </div>
+            <div class="ai-context-badge" id="aiContextBadge">عام</div>
+            <div class="ai-status"></div>
+        </div>
+        <!-- Context strip when place selected -->
+        <div class="ai-context-strip" id="aiContextStrip">
+            <img class="ai-context-strip-img" id="aiContextImg" src="" alt="">
+            <span class="ai-context-strip-name" id="aiContextName">اسم الموقع</span>
+            <button class="ai-context-strip-clear" onclick="clearPlaceContext()" title="إلغاء التركيز"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <!-- Quick suggestions -->
+        <div class="quick-suggestions" id="quickSuggestions"></div>
+        <div class="ai-messages" id="chatContainer">
+            <div class="msg-ai">
+                <div class="msg-sender">مساعد مَسَاري</div>
+                <div class="msg-bubble-ai">أهلاً! اضغط على أي موقع أو مرفق لأبدأ النقاش عنه مباشرة، أو اسألني بحرية! 🌿</div>
+            </div>
+        </div>
+        <div class="ai-input-area">
+            <input class="ai-input" id="aiInput" type="text" placeholder="اسأل عن أي موقع أو مرفق..." onkeydown="if(event.key==='Enter') askAI()">
+            <button class="ai-send" id="aiSendBtn" onclick="askAI()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleModalClick(event)">
+    <div class="modal-box" id="modalBox">
+        <div class="modal-gallery" id="modalGallery">
+            <div class="gallery-slides" id="gallerySlides"></div>
+            <div class="gallery-overlay"></div>
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="gallery-prev" onclick="galleryPrev()"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="gallery-next" onclick="galleryNext()"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="gallery-nav" id="galleryDots"></div>
+            <div class="gallery-source-badge">📸 Google Photos</div>
+            <div class="modal-title-area">
+                <div class="modal-cat-badge" id="modalCat"></div>
+                <div class="modal-name" id="modalTitle"></div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <p class="modal-desc" id="modalDesc"></p>
+            <div>
+                <div class="modal-facilities-title"><i class="fa-solid fa-circle-check" style="color:var(--ember)"></i> المرافق والخدمات المتوفرة — اضغط لسؤال AI</div>
+                <div class="modal-facilities-grid" id="modalFacilitiesGrid"></div>
+            </div>
+            <div class="modal-btns-row">
+                <button class="modal-chat-btn" id="modalChatBtn" onclick="chatAboutCurrentPlace()">
+                    <i class="fa-solid fa-robot"></i> ناقش الموقع مع AI
+                </button>
+                <a class="modal-map-btn" id="modalMapLink" href="#" target="_blank">
+                    <i class="fa-solid fa-location-arrow"></i> خرائط قوقل
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer>&copy; 2026 <span>مَسَاري</span> — دليل السراة السياحي الذكي</footer>
+
+<script>
+// ============================================================
+//  FACILITIES MASTER LIST
+// ============================================================
+const FACILITY_DEFS = [
+    { key:'مصلى',        icon:'🕌', type:'prayer',  label:'مصلى' },
+    { key:'دورات مياه',  icon:'🚻', type:'basic',   label:'دورات مياه' },
+    { key:'مواقف سيارات',icon:'🅿️', type:'parking', label:'مواقف' },
+    { key:'شبة نار',     icon:'🔥', type:'fire',    label:'شبة نار' },
+    { key:'قهوة مختصة', icon:'☕', type:'food',    label:'قهوة مختصة' },
+    { key:'مطعم',        icon:'🍽️', type:'food',    label:'مطعم' },
+    { key:'واي فاي',     icon:'📶', type:'wifi',    label:'واي فاي' },
+    { key:'شواحن هواتف', icon:'🔌', type:'basic',   label:'شواحن' },
+    { key:'إضاءة ليلية', icon:'💡', type:'basic',   label:'إضاءة ليلية' },
+    { key:'ألعاب أطفال', icon:'🎠', type:'kids',    label:'ألعاب أطفال' },
+    { key:'مسار مشي',    icon:'🥾', type:'view',    label:'مسار مشي' },
+    { key:'إطلالة طبيعية',icon:'🌄',type:'view',    label:'إطلالة' },
+    { key:'كافيه',       icon:'🥤', type:'food',    label:'كافيه' },
+    { key:'بحيرة',       icon:'💧', type:'view',    label:'بحيرة' },
+    { key:'شلال',        icon:'🌊', type:'view',    label:'شلال' },
+    { key:'عربات طعام',  icon:'🛒', type:'food',    label:'عربات طعام' },
+    { key:'خيام',        icon:'⛺', type:'basic',   label:'خيام' },
+    { key:'أراجيح',      icon:'🪁', type:'kids',    label:'أراجيح' },
+];
+
+// ============================================================
+//  DEFAULT DATABASE
+// ============================================================
+const DEFAULT_DB = {
+    "المندق": {
+        "شباب": [
+            {
+                name:"منتزه الخلب وجلسة الكهف",
+                category:"منتزهات ومغارات",
+                desc:"جلسات صخرية معزولة وإطلالة شاهقة تناسب الشباب مع توفر إنارة هادئة وعربات قهوة مختصة بالموقع.",
+                facilities:["مصلى","دورات مياه","مواقف سيارات","قهوة مختصة","شواحن هواتف","إضاءة ليلية","إطلالة طبيعية"],
+                map:"https://maps.google.com/?cid=8844054493853999885",
+                photos:[
+                    "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=700&q=80"
+                ]
+            },
+            {
+                name:"حديقة ووادي الغرير السياحي",
+                category:"أودية ومساحات مفتوحة",
+                desc:"الموقع المفضل للشباب الراغبين في الهدوء والخصوصية العالية، مناسب جداً لجلسات السمر وشبة النار.",
+                facilities:["شبة نار","مصلى","دورات مياه","مواقف سيارات","واي فاي","مسار مشي","إطلالة طبيعية","خيام"],
+                map:"https://maps.google.com/?cid=2112410812192500333",
+                photos:[
+                    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1472214222541-d510753a8707?auto=format&fit=crop&w=700&q=80"
+                ]
+            }
+        ],
+        "عوائل": [
+            {
+                name:"منتزه حديقة الفراشة الاستثنائي",
+                category:"منتزهات عائلية",
+                desc:"أكبر منتزهات المندق العائلية، مجهز بمماشٍ عريضة، مساحات خضراء متكاملة، ومناطق ألعاب آمنة للأطفال.",
+                facilities:["ألعاب أطفال","مصلى","دورات مياه","مواقف سيارات","عربات طعام","مسار مشي","إضاءة ليلية","أراجيح"],
+                map:"https://maps.google.com/?cid=8589427363351716133",
+                photos:[
+                    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=700&q=80"
+                ]
+            },
+            {
+                name:"منتزه سيدة السحاب المطل",
+                category:"مطلات عائلية",
+                desc:"موقع مرتفع يناسب العوائل لمشاهدة بحر الضباب والغيوم الملامسة للأرض في أجواء مبهجة ومفرحة.",
+                facilities:["مصلى","دورات مياه","مواقف سيارات","كافيه","إطلالة طبيعية","عربات طعام"],
+                map:"https://maps.google.com/?cid=15928885946365121792",
+                photos:[
+                    "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=700&q=80"
+                ]
+            }
+        ]
+    },
+    "الباحة": {
+        "شباب": [
+            {
+                name:"غابة رغدان — الممشى المعلق",
+                category:"غابات ومطلات شبابية",
+                desc:"تجمع شبابي رائع وسط كثافة الأشجار، مجهز بممشى زجاجي معلق وكافيهات تعمل لساعات متأخرة.",
+                facilities:["كافيه","قهوة مختصة","مصلى","دورات مياه","مواقف سيارات","شواحن هواتف","إضاءة ليلية","مسار مشي","إطلالة طبيعية"],
+                map:"https://maps.google.com/?q=غابة+رغدان",
+                photos:[
+                    "https://images.unsplash.com/photo-1472214222541-d510753a8707?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=700&q=80"
+                ]
+            }
+        ],
+        "عوائل": [
+            {
+                name:"منتزه الأمير حسام — الشلالات والبحيرة",
+                category:"منتزهات وشلالات عائلية",
+                desc:"أيقونة الباحة المفرحة للعوائل، يحتوي على شلالات مائية مندفعة ومضاءة ليلاً مع بحيرة صناعية غاية في الروعة.",
+                facilities:["شلال","بحيرة","مطعم","مصلى","دورات مياه","مواقف سيارات","ألعاب أطفال","إضاءة ليلية","عربات طعام"],
+                map:"https://maps.google.com/?q=منتزه+الأمير+حسام",
+                photos:[
+                    "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80"
+                ]
+            }
+        ]
+    },
+    "الطائف": {
+        "شباب": [
+            {
+                name:"مطل جبل دكا — الشفا",
+                category:"قمم ومطلات شبابية",
+                desc:"أعلى قمة في الطائف، توفر للشباب أجواءً باردة جداً وتجربة تأمل للنجوم والغروب بعيداً عن الصخب.",
+                facilities:["قهوة مختصة","مواقف سيارات","إطلالة طبيعية","مسار مشي","دورات مياه"],
+                map:"https://maps.google.com/?q=جبل+دكا+الشفا",
+                photos:[
+                    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=700&q=80"
+                ]
+            }
+        ],
+        "عوائل": [
+            {
+                name:"مزارع الورد الطائفي بالشفا",
+                category:"مزارع ريفية وكافيهات",
+                desc:"رحلة عائلية مبهجة ومفرحة وسط حقول الورد ومعامل تقطيره، تحتوي على كافيهات ريفية وجلسات خلابة.",
+                facilities:["كافيه","مصلى","دورات مياه","مواقف سيارات","عربات طعام","إطلالة طبيعية","مسار مشي"],
+                map:"https://maps.google.com/?q=مزارع+المرشد+للورد",
+                photos:[
+                    "https://images.unsplash.com/photo-1557223562-6c77ef16210f?auto=format&fit=crop&w=700&q=80",
+                    "https://images.unsplash.com/photo-1472214222541-d510753a8707?auto=format&fit=crop&w=700&q=80"
+                ]
+            }
+        ]
+    }
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+const STORAGE_KEY = 'masari_db_v3';
+function loadDB(){ try{ const s=localStorage.getItem(STORAGE_KEY); return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT_DB)); }catch(e){ return JSON.parse(JSON.stringify(DEFAULT_DB)); } }
+function saveDB(d){ try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(d)); }catch(e){} }
+
+let db = loadDB();
+let activeCity='المندق', activeType='شباب';
+let dashboardOpen=false, dashboardMode=false;
+let currentModalItem=null, galleryIndex=0;
+let selectedPlaceContext=null;
+
+// ============================================================
+//  RENDER CARDS
+// ============================================================
+function renderView(){
+    document.getElementById('heroCity').textContent=activeCity;
+    document.getElementById('heroType').textContent=activeType;
+    document.getElementById('lblCity').textContent=activeCity;
+    document.getElementById('lblType').textContent=activeType;
+    const items=(db[activeCity]&&db[activeCity][activeType])||[];
+    document.getElementById('itemsCount').textContent=`${items.length} مواقع متوفرة`;
+    const container=document.getElementById('cardsContainer');
+    container.innerHTML='';
+    if(!items.length){
+        container.innerHTML=`<div class="empty-state"><i class="fa-solid fa-map-pin"></i><p>لا توجد مواقع مسجلة في هذه الفئة.<br>أضف مواقع من لوحة التحكم.</p></div>`;
+        return;
+    }
+    items.forEach((item,i)=>{
+        const facDefs=item.facilities.map(fk=>FACILITY_DEFS.find(d=>d.key===fk)||{key:fk,icon:'✓',type:'basic',label:fk});
+        const pillsHTML=facDefs.map(f=>`<span class="facility-pill type-${f.type}" onclick="event.stopPropagation();askAboutFacility('${item.name}','${f.key}','${f.icon}')" title="اسأل AI عن هذا المرفق">${f.icon} ${f.label}</span>`).join('');
+        const thumbSrc=item.photos&&item.photos[0]?item.photos[0]:'';
+        const card=document.createElement('div');
+        card.className='place-card'+(dashboardMode?' dashboard-mode':'');
+        card.style.animationDelay=`${i*0.07}s`;
+        card.innerHTML=`
+            <div class="card-img-wrap">
+                ${thumbSrc?`<img class="card-img" src="${thumbSrc}" alt="${item.name}" loading="lazy">`:`<div class="card-img-placeholder"><i class="fa-solid fa-mountain-sun"></i></div>`}
+            </div>
+            <div class="card-body">
+                <div class="card-top">
+                    <span class="card-cat">${item.category}</span>
+                    <div class="card-name">${item.name}</div>
+                    <div class="card-desc">${item.desc}</div>
+                    <div class="card-facilities">${pillsHTML}</div>
+                </div>
+                <div class="card-footer">
+                    <button class="card-cta" onclick="event.stopPropagation();openModal(${i})">التفاصيل والصور</button>
+                    <button class="card-delete-btn" onclick="event.stopPropagation();deletePlace(${i})"><i class="fa-solid fa-trash"></i> حذف</button>
+                </div>
+            </div>`;
+        card.addEventListener('click',()=>{ if(!dashboardMode) openModal(i); });
+        container.appendChild(card);
+    });
+}
+
+// ============================================================
+//  CITY / TYPE SWITCH
+// ============================================================
+function switchCity(name){ activeCity=name; document.querySelectorAll('.city-btn').forEach(b=>b.classList.remove('active')); document.getElementById(`city-${name}`).classList.add('active'); renderView(); }
+function switchType(name){ activeType=name; document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active')); document.getElementById(`type-${name}`).classList.add('active'); renderView(); }
+function resetApp(){ switchCity('المندق'); switchType('شباب'); }
+
+// ============================================================
+//  GALLERY MODAL
+// ============================================================
+let gallerySlides=[];
+function openModal(index){
+    const item=(db[activeCity][activeType])[index];
+    currentModalItem=item;
+    galleryIndex=0;
+    // build gallery
+    gallerySlides=item.photos&&item.photos.length?item.photos:[];
+    const slidesEl=document.getElementById('gallerySlides');
+    slidesEl.innerHTML='';
+    const dotsEl=document.getElementById('galleryDots');
+    dotsEl.innerHTML='';
+    if(gallerySlides.length){
+        gallerySlides.forEach((src,i)=>{
+            const img=document.createElement('img');
+            img.className='gallery-slide';
+            img.src=src; img.alt='صورة الموقع'; img.loading='lazy';
+            slidesEl.appendChild(img);
+            const dot=document.createElement('button');
+            dot.className='gallery-dot'+(i===0?' active':'');
+            dot.onclick=()=>goToSlide(i);
+            dotsEl.appendChild(dot);
+        });
+    } else {
+        const ph=document.createElement('div');
+        ph.className='gallery-slide-placeholder';
+        ph.innerHTML='<i class="fa-solid fa-mountain-sun"></i>';
+        slidesEl.appendChild(ph);
+    }
+    slidesEl.style.transform='translateX(0)';
+    document.getElementById('modalCat').textContent=item.category;
+    document.getElementById('modalTitle').textContent=item.name;
+    document.getElementById('modalDesc').textContent=item.desc;
+    document.getElementById('modalMapLink').href=item.map||'#';
+    // facilities
+    const facGrid=document.getElementById('modalFacilitiesGrid');
+    facGrid.innerHTML='';
+    item.facilities.forEach(fk=>{
+        const def=FACILITY_DEFS.find(d=>d.key===fk)||{key:fk,icon:'✓',label:fk};
+        const el=document.createElement('div');
+        el.className='modal-fac-item';
+        el.innerHTML=`<span class="fac-icon">${def.icon}</span><span class="fac-label">${def.label}</span>`;
+        el.onclick=()=>{ closeModal(); askAboutFacility(item.name,fk,def.icon); };
+        facGrid.appendChild(el);
+    });
+    document.getElementById('modalOverlay').classList.add('open');
+}
+function goToSlide(i){
+    galleryIndex=i;
+    document.getElementById('gallerySlides').style.transform=`translateX(${i*100}%)`;
+    document.querySelectorAll('.gallery-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
+}
+function galleryPrev(){ if(gallerySlides.length>1) goToSlide((galleryIndex-1+gallerySlides.length)%gallerySlides.length); }
+function galleryNext(){ if(gallerySlides.length>1) goToSlide((galleryIndex+1)%gallerySlides.length); }
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); currentModalItem=null; }
+function handleModalClick(e){ if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+
+// ============================================================
+//  CHAT WITH PLACE
+// ============================================================
+function chatAboutCurrentPlace(){
+    if(!currentModalItem) return;
+    closeModal();
+    setPlaceContext(currentModalItem);
+    addSystemMsg(`جاهز للحديث عن **${currentModalItem.name}**! اسألني عن أي مرفق أو خدمة فيه.`);
+}
+
+function setPlaceContext(item){
+    selectedPlaceContext=item;
+    document.getElementById('aiContextBadge').textContent=item.name.substring(0,12)+'...';
+    const strip=document.getElementById('aiContextStrip');
+    strip.classList.add('visible');
+    const img=document.getElementById('aiContextImg');
+    img.src=item.photos&&item.photos[0]?item.photos[0]:'';
+    document.getElementById('aiContextName').textContent=item.name;
+    updateQuickSuggestions(item);
+}
+
+function clearPlaceContext(){
+    selectedPlaceContext=null;
+    document.getElementById('aiContextBadge').textContent='عام';
+    document.getElementById('aiContextStrip').classList.remove('visible');
+    document.getElementById('quickSuggestions').innerHTML='';
+}
+
+function updateQuickSuggestions(item){
+    const qs=document.getElementById('quickSuggestions');
+    qs.innerHTML='';
+    const chips=[
+        `أين المصلى؟`,`هل يوجد مواقف مجانية؟`,`ما أوقات الدوام؟`,`هل مناسب للعائلة؟`,`ما أبرز المرافق؟`
+    ];
+    chips.forEach(c=>{
+        const el=document.createElement('button');
+        el.className='quick-chip';
+        el.textContent=c;
+        el.onclick=()=>{ document.getElementById('aiInput').value=c; askAI(); };
+        qs.appendChild(el);
+    });
+}
+
+function askAboutFacility(placeName, facilityKey, icon){
+    const item=findItemByName(placeName);
+    if(item) setPlaceContext(item);
+    const q=`${icon} هل يوجد ${facilityKey} في ${placeName}؟ وأين يقع؟`;
+    document.getElementById('aiInput').value=q;
+    askAI();
+    // scroll to AI panel
+    document.querySelector('.ai-panel').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function findItemByName(name){
+    for(const city of Object.keys(db)){
+        for(const type of ['شباب','عوائل']){
+            const found=(db[city][type]||[]).find(i=>i.name===name);
+            if(found) return found;
+        }
+    }
+    return null;
+}
+
+// ============================================================
+//  CLAUDE AI
+// ============================================================
+function addSystemMsg(text){
+    const chat=document.getElementById('chatContainer');
+    const el=document.createElement('div');
+    el.className='msg-ai';
+    el.innerHTML=`<div class="msg-sender">مساعد مَسَاري</div><div class="msg-bubble-ai">${text}</div>`;
+    chat.appendChild(el);
+    chat.scrollTop=chat.scrollHeight;
+}
+
+async function askAI(){
+    const input=document.getElementById('aiInput');
+    const q=input.value.trim();
+    if(!q) return;
+    const chat=document.getElementById('chatContainer');
+    const sendBtn=document.getElementById('aiSendBtn');
+
+    const uMsg=document.createElement('div');
+    uMsg.className='msg-user';
+    uMsg.innerHTML=`<div class="msg-sender">أنت</div><div class="msg-bubble-user">${q}</div>`;
+    chat.appendChild(uMsg);
+    input.value='';
+    chat.scrollTop=chat.scrollHeight;
+
+    const typing=document.createElement('div');
+    typing.className='msg-ai'; typing.id='typing-indicator';
+    typing.innerHTML=`<div class="msg-sender">مساعد مَسَاري</div><div class="msg-bubble-ai"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+    chat.appendChild(typing);
+    chat.scrollTop=chat.scrollHeight;
+
+    sendBtn.innerHTML='<i class="fa-solid fa-circle-notch" style="animation:spin 1s linear infinite"></i>';
+    sendBtn.style.opacity='0.6';
+
+    // Build system prompt
+    let placeContext='';
+    if(selectedPlaceContext){
+        const p=selectedPlaceContext;
+        placeContext=`\n\nالموقع المحدد للنقاش الآن: "${p.name}" (${p.category})\nالوصف: ${p.desc}\nالمرافق المتوفرة: ${p.facilities.join('، ')}\nرابط الخريطة: ${p.map}`;
+    } else {
+        const items=[...(db[activeCity]?.['شباب']||[]),...(db[activeCity]?.['عوائل']||[])];
+        placeContext=`\n\nمواقع ${activeCity} المتاحة:\n`+items.map(p=>`• ${p.name}: ${p.facilities.join('، ')}`).join('\n');
+    }
+
+    const systemPrompt=`أنت "مساعد مَسَاري"، مساعد سياحي ذكي متخصص في منطقة السراة السعودية.
+المدينة النشطة: ${activeCity} — الفئة: ${activeType}.${placeContext}
+
+أجب بالعربية البسيطة. كن مفيداً ومحدداً. إذا سُئلت عن مرفق معين، اذكر إن كان متوفراً وأضف نصيحة مفيدة.
+حافظ على إجاباتك في 3-5 جمل.`;
+
+    try{
+        const resp=await fetch('https://api.anthropic.com/v1/messages',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                model:'claude-sonnet-4-20250514',
+                max_tokens:1000,
+                system:systemPrompt,
+                messages:[{role:'user',content:q}]
+            })
+        });
+        const data=await resp.json();
+        const reply=data.content?.[0]?.text||'عذراً، تعذّر الرد الآن.';
+        document.getElementById('typing-indicator')?.remove();
+        const aMsg=document.createElement('div');
+        aMsg.className='msg-ai';
+        aMsg.innerHTML=`<div class="msg-sender">مساعد مَسَاري ✦ AI</div><div class="msg-bubble-ai">${reply}</div>`;
+        chat.appendChild(aMsg);
+    }catch(err){
+        document.getElementById('typing-indicator')?.remove();
+        const eMsg=document.createElement('div');
+        eMsg.className='msg-ai';
+        eMsg.innerHTML=`<div class="msg-sender">مساعد مَسَاري</div><div class="msg-bubble-ai" style="border-color:#FEE2E2;color:#DC2626">⚠️ تعذّر الاتصال بـ AI. تحقق من الإنترنت.</div>`;
+        chat.appendChild(eMsg);
+    }
+
+    sendBtn.innerHTML='<i class="fa-solid fa-paper-plane"></i>';
+    sendBtn.style.opacity='1';
+    chat.scrollTop=chat.scrollHeight;
+}
+
+// ============================================================
+//  DASHBOARD
+// ============================================================
+function initFacCheckGrid(){
+    const grid=document.getElementById('facCheckGrid');
+    if(!grid) return;
+    grid.innerHTML='';
+    FACILITY_DEFS.forEach(f=>{
+        const el=document.createElement('label');
+        el.className='fac-check-item';
+        el.dataset.key=f.key;
+        el.innerHTML=`<input type="checkbox" value="${f.key}"><span class="fac-check-icon">${f.icon}</span><span class="fac-check-label">${f.label}</span>`;
+        el.onclick=()=>el.classList.toggle('checked', el.querySelector('input').checked);
+        grid.appendChild(el);
+    });
+}
+
+function toggleDashboard(){
+    dashboardOpen=!dashboardOpen;
+    dashboardMode=dashboardOpen;
+    document.getElementById('dashboardPanel').classList.toggle('open',dashboardOpen);
+    const btn=document.getElementById('dashToggleBtn');
+    btn.classList.toggle('active',dashboardOpen);
+    btn.innerHTML=dashboardOpen?'<i class="fa-solid fa-xmark"></i> <span>إغلاق</span>':'<i class="fa-solid fa-sliders"></i> <span>لوحة التحكم</span>';
+    if(dashboardOpen){ initFacCheckGrid(); renderTable(); }
+    renderView();
+}
+
+function switchDashTab(tab){
+    document.querySelectorAll('.dash-tab').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='add')||(i===1&&tab==='manage')));
+    document.getElementById('dash-add').classList.toggle('active',tab==='add');
+    document.getElementById('dash-manage').classList.toggle('active',tab==='manage');
+    if(tab==='manage') renderTable();
+}
+
+function addPlace(){
+    const name=document.getElementById('f-name').value.trim();
+    const cat=document.getElementById('f-cat').value.trim();
+    const city=document.getElementById('f-city').value;
+    const type=document.getElementById('f-type').value;
+    const desc=document.getElementById('f-desc').value.trim();
+    const map=document.getElementById('f-map').value.trim();
+    const img=document.getElementById('f-img').value.trim();
+    const checkedFacs=[...document.querySelectorAll('#facCheckGrid input:checked')].map(i=>i.value);
+    if(!name||!cat||!desc){ showToast('⚠️ يرجى تعبئة الحقول الإلزامية','error'); return; }
+    if(!db[city]) db[city]={شباب:[],عوائل:[]};
+    if(!db[city][type]) db[city][type]=[];
+    const defaultPhotos=['https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80'];
+    db[city][type].push({ name, category:cat, desc, facilities:checkedFacs.length?checkedFacs:['دورات مياه','مصلى'], map:map||'#', photos:img?[img]:defaultPhotos });
+    saveDB(db);
+    ['f-name','f-cat','f-desc','f-map','f-img'].forEach(id=>document.getElementById(id).value='');
+    document.querySelectorAll('#facCheckGrid input').forEach(i=>{ i.checked=false; i.closest('label').classList.remove('checked'); });
+    showToast('✅ تمت إضافة الموقع بنجاح!','success');
+    renderView(); renderTable();
+}
+
+function deletePlace(index){ if(!confirm('حذف هذا الموقع نهائياً؟')) return; db[activeCity][activeType].splice(index,1); saveDB(db); showToast('🗑️ تم الحذف','success'); renderView(); renderTable(); }
+function deletePlaceFromTable(city,type,index){ if(!confirm('حذف هذا الموقع نهائياً؟')) return; db[city][type].splice(index,1); saveDB(db); showToast('🗑️ تم الحذف','success'); renderView(); renderTable(); }
+
+function renderTable(){
+    const tbody=document.getElementById('placesTableBody');
+    tbody.innerHTML='';
+    let count=0;
+    Object.keys(db).forEach(city=>{
+        ['شباب','عوائل'].forEach(type=>{
+            (db[city][type]||[]).forEach((item,i)=>{
+                count++;
+                const thumb=item.photos&&item.photos[0]?`<img class="tbl-thumb" src="${item.photos[0]}" alt="">`:'—';
+                const typeBadge=type==='شباب'?`<span class="tbl-type-youth">شباب</span>`:`<span class="tbl-type-fam">عوائل</span>`;
+                const row=document.createElement('tr');
+                row.innerHTML=`<td>${thumb}</td><td style="font-weight:700;max-width:180px">${item.name}</td><td>${city}</td><td>${typeBadge}</td><td><span class="tbl-badge">${item.category}</span></td><td><button class="tbl-delete" onclick="deletePlaceFromTable('${city}','${type}',${i})"><i class="fa-solid fa-trash"></i></button></td>`;
+                tbody.appendChild(row);
+            });
+        });
+    });
+    if(!count) tbody.innerHTML=`<tr><td colspan="6" class="empty-table">لا توجد مواقع مسجلة</td></tr>`;
+}
+
+// TOAST
+function showToast(msg,type='success'){ const t=document.getElementById('toast'); t.textContent=msg; t.className=`toast ${type} show`; setTimeout(()=>t.classList.remove('show'),3000); }
+
+// INIT
+window.onload=resetApp;
+</script>
+</body>
+</html>
